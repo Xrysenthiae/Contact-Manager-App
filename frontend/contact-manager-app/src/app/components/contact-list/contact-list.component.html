@@ -1,0 +1,19 @@
+<div class="container mt-4">
+  <h2 class="text-center">My Contacts</h2>
+  
+  <div *ngIf="contacts.length > 0; else noContacts">
+    <div class="card mt-3 shadow-sm" *ngFor="let contact of contacts">
+      <div class="card-body">
+        <h5 class="card-title">{{ contact.name }}</h5>
+        <p class="card-text">
+          📧 {{ contact.email }} <br>
+          📞 {{ contact.phone }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noContacts>
+    <p class="text-muted text-center mt-4">No contacts found. Add a new one!</p>
+  </ng-template>
+</div>

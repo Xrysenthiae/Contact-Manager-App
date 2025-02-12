@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+.custom-btn {
+    display: inline-block;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 8px;
+    background-color: #007bff;
+    border: none;
+    color: white !important;
+    text-decoration: none !important;
+    transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  .custom-btn:hover {
+    background-color: #0a4886;
+    color: white !important;
+  }
