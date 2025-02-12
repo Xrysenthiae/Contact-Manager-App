@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const { registerUser, loginUser } = require('../models/userModel');
 
-router.post('/api/auth/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const response = await registerUser(req.body.username, req.body.password);
         res.status(201).json(response);

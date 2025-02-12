@@ -1,18 +1,17 @@
 // User Model Functions
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const nano = require('nano')('http://admin:password@localhost:5984');
+const nano = require('nano')(process.env.COUCHDB_URL);
 const usersDb = nano.db.use('_users');
 
 async function registerUser(username, password) {
-    const hashedPassword = await bcrypt.hash(password, 10);
     const userDoc = {
         _id: "org.couchdb.user:" + username,
         name: username,
         type: "user",
         roles: [],
-        password: hashedPassword
+        password: password // CouchDB will hash it automatically
     };
 
     try {
@@ -26,8 +25,11 @@ async function registerUser(username, password) {
 async function loginUser(username, password) {
     try {
         const userDoc = await usersDb.get("org.couchdb.user:" + username);
-        const validPass = await bcrypt.compare(password, userDoc.password);
-        if (!validPass) throw new Error("Invalid Credentials");
+
+        // Compare plaintext passwords, since CouchDB already hashes internally
+        if (userDoc.password !== password) {
+            throw new Error("Invalid Credentials");
+        }
 
         const token = jwt.sign({ id: userDoc.name }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return { token };
